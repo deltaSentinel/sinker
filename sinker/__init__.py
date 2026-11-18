@@ -1,3 +1,5 @@
+"""Sinker: multi-signal phishing detection system."""
+
 from .seed import DEFAULT_SEED, set_seed
 
 __version__ = "0.1.0"
