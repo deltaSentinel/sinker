@@ -35,14 +35,18 @@ jobs:
         run: |
           uv run python - <<'EOF'
           import torch
+          import numpy as np
           from sinker import set_seed
           from sinker.model import HookCNN
           from sinker.data import encode_url
-          import numpy as np
-          set_seed(1337); a = HookCNN()
-          set_seed(1337); b = HookCNN()
-          xa = xb = torch.from_numpy(np.stack([encode_url("https://x.co/a"), encode_url("http://evil-login.biz")]))
-          ra, rb = a(xa), b(xb)
+          set_seed(1337); a = HookCNN().eval()
+          set_seed(1337); b = HookCNN().eval()
+          x = torch.from_numpy(np.stack([
+            encode_url("https://x.co/a"),
+            encode_url("http://evil-login.biz"),
+          ]))
+          width torch.no_grad():
+            ra, rb = a(x), b(x)
           assert torch.allclose(ra, rb, atol=1e-6), "same seed must reproduce forward pass"
           print("determinism ok:", ra.tolist())
           EOF
