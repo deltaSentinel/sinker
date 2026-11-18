@@ -1,5 +1,5 @@
 ![CI](https://github.com/deltaSentinel/sinker/actions/workflows/ci.yml/badge.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)(./README.md)
 ![Python](https://img.shields.io/badge/python-3.12+-blue.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.4%2B-ee4c2c.svg)
 [![Security](https://img.shields.io/badge/security-policy%20%E2%9C%93-green.svg)](./SECURITY.md)
