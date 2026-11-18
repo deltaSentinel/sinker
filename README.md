@@ -1,3 +1,10 @@
+![CI](https://github.com/deltaSentinel/sinker/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.12+-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.4%2B-ee4c2c.svg)
+![Security](https://img.shields.io/badge/security-policy%20%E2%9C%93-green.svg)
+![Status](https://img.shields.io/badge/stage-1%20%EF%81%83%20in%20progress-orange.svg)
+
 Multi-signal phishing detection system. Each *signal* is an independently
 trained detector (URL string, HTML/DOM, email headers, page screenshot, ...)
 whose probability output is combined by a fusion/arbitration layer.
