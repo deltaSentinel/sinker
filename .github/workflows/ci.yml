@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Sync environment
+        run: uv sync --group dev
+
+      - name: Import smoke test
+        run: |
+          uv run python -c "import sinker; import sinker.model; import sinker.train"
+          uv run python -m sinker.train --help
+          uv run python -m sinker.predict --help
+
+      - name: Run pytest
+        run: uv run pytest -v
+
+      - name: Determinism check (same seed -> same shapes/forward)
+        run: |
+          uv run python - <<'EOF'
+          import torch
+          from sinker import set_seed
+          from sinker.model import HookCNN
+          from sinker.data import encode_url
+          import numpy as np
+          set_seed(1337); a = HookCNN()
+          set_seed(1337); b = HookCNN()
+          xa = xb = torch.from_numpy(np.stack([encode_url("https://x.co/a"), encode_url("http://evil-login.biz")]))
+          ra, rb = a(xa), b(xb)
+          assert torch.allclose(ra, rb, atol=1e-6), "same seed must reproduce forward pass"
+          print("determinism ok:", ra.tolist())
+          EOF
+
